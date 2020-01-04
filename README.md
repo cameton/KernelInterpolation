@@ -1,2 +1,4 @@
 # SKI.jl
-A Julia implementation of the works of Andrew Gordon Wilson, Ian Delbridge, David Bindel, and others.
+A collection of various utilities for computing kernel interpolants in Julia.
+
+Implementations draw largely from the papers of Andrew Gordon Wilson, David Bindel, Ian Delbridge (#TODO add specific citations).
