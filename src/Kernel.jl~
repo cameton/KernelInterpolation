@@ -1,0 +1,5 @@
+module Kernel
+
+abstract type KernelFunction end
+
+end # module

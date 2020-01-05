@@ -1,0 +1,23 @@
+name = "KernelInterpolation"
+uuid = "c43e6a02-30f5-4116-99fc-fca70bd6999e"
+authors = ["Cameron Ibrahim <dev@cameronibrahim.com>"]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+FastTransforms = "057dd010-8810-581a-b7be-e3fc3b93f78c"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+IterativeSolvers = "42fd0dbc-a981-5370-80f2-aaf504508153"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+LinearMaps = "7a12625a-238d-50fd-b39a-03d52299707e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Profile = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
+ToeplitzMatrices = "c751599d-da0a-543b-9d20-d0a503d91d24"
+Traceur = "37b6cedf-1f77-55f8-9503-c64b63398394"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
