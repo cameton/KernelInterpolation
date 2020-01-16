@@ -1,4 +1,4 @@
-module KernelInterpolation
+module PDKernels
 
 using Reexport
 
