@@ -1,6 +1,6 @@
 
 """
-    SqExponential(lnℓ::AbstractFloat) <: RadialKernel{SqEuclidean, 1}
+    SqExponential(lnℓ::AbstractFloat) <: RadialKernel{SqEuclidean}
 
 The squared exponential kernel (aka the Gaussian kernel) with length scale 
 ``\\exp(2 \\ln\\ell) = \\ell^2 > 0``. 
@@ -14,7 +14,7 @@ External links
 * [RBF Kernel on Wikipedia](https://en.wikipedia.org/wiki/Radial_basis_function_kernel)
 
 """
-mutable struct SqExponential{F<:AbstractFloat} <: RadialKernel{SqEuclidean, 1}
+mutable struct SqExponential{F<:AbstractFloat} <: RadialKernel{SqEuclidean}
     dist::SqEuclidean
     lnℓ::F
     twoℓ²::F
@@ -25,12 +25,14 @@ end
 
 SqExponential(lnℓ::AbstractFloat) = SqExponential(SqEuclidean(), lnℓ)
 
-(k::SqExponential)(τ::AbstractFloat) = exp(-τ / k.twoℓ²)
+@inline (k::SqExponential)(τ::AbstractFloat) = exp(-τ / k.twoℓ²)
 
 Gaussian = SqExponential
 
+numparams(::SqExponential) = (1,)
+paramtypes(::SqExponential{F}) where F = (F,)
 params(k::SqExponential) = (lnℓ = k.lnℓ,)
-function setparams!(k::SqExponential, lnℓ::AbstractFloat)
+function setparams!(k::SqExponential{F}, lnℓ::F) where F
     k.lnℓ = lnℓ
-    k.twoℓ² = exp(2 * lnℓ)
+    k.twoℓ² = exp(2 * lnℓ + float(logtwo))
 end

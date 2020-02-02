@@ -1,6 +1,6 @@
 
 """
-    RationalQuadratic(lnℓ::AbstractFloat) <: RadialKernel{SqEuclidean, 1}
+    RationalQuadratic(lnℓ::AbstractFloat) <: RadialKernel{SqEuclidean}
 
 The rational quadratic kernel with parameters 
 ``\\exp(2 \\ln\\ell) = \\ell^2 > 0`` and ``\\exp(\\ln\\alpha) = \\alpha > 0``. 
@@ -19,7 +19,7 @@ External links
 """
 mutable struct RationalQuadratic{
     F<:AbstractFloat
-} <: RadialKernel{SqEuclidean, 2}
+} <: RadialKernel{SqEuclidean}
     dist::SqEuclidean
     lnℓ::F
     lnα::F
@@ -45,10 +45,12 @@ end
 RationalQuadratic(lnℓ::AbstractFloat, lnα::AbstractFloat) =
     RationalQuadratic(SqEuclidean(), lnℓ, lnα)
 
-(k::RationalQuadratic)(τ::AbstractFloat) = (1 + τ / k.twoαℓ²)^(-k.α)
+@inline (k::RationalQuadratic)(τ::AbstractFloat) = (1 + τ / k.twoαℓ²)^(-k.α)
 
+numparams(::RationalQuadratic) = (1, 1)
+paramtypes(::RationalQuadratic{F}) where F = (F, F)
 params(k::RationalQuadratic) = (lnℓ = k.lnℓ, lnα = k.lnα)
-function setparams!(k::RationalQuadratic, lnℓ::AbstractFloat, lnα::AbstractFloat)
+function setparams!(k::RationalQuadratic{F}, lnℓ::F, lnα::F) where F
     k.lnℓ = lnℓ
     k.lnα = lnα
     k.α = exp(lnα)

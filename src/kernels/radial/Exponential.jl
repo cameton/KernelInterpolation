@@ -1,6 +1,6 @@
 
 """
-    Exponential(lnℓ::AbstractFloat) <: RadialKernel{Euclidean, 1}
+    Exponential(lnℓ::AbstractFloat) <: RadialKernel{Euclidean}
 
 The exponential kernel with length scale 
 ``\\exp(\\ln \\ell) = \\ell > 0``.
@@ -10,7 +10,7 @@ k_{\\ell}(x, y) = k_{\\ell}(\\lVert x - y\\rVert_2) =
 \\exp\\bigg\\lbrace -\\frac{\\lVert x - y\\rVert_2}{\\ell}\\bigg\\rbrace
 ```
 """
-mutable struct Exponential{F<:AbstractFloat} <: RadialKernel{Euclidean, 1}
+mutable struct Exponential{F<:AbstractFloat} <: RadialKernel{Euclidean}
     dist::Euclidean
     lnℓ::F
     ℓ::F
@@ -21,10 +21,12 @@ end
 
 Exponential(lnℓ::AbstractFloat) = Exponential(Euclidean(), lnℓ)
 
-(k::Exponential)(τ::AbstractFloat) = exp(-τ / k.ℓ)
+@inline (k::Exponential)(τ::AbstractFloat) = exp(-τ / k.ℓ)
 
+numparams(::Exponential) = (1,)
+paramtypes(::Exponential{F}) where F = (F,)
 params(k::Exponential) = (lnℓ = k.lnℓ,)
-function setparams!(k::Exponential, lnℓ::AbstractFloat)
+function setparams!(k::Exponential{F}, lnℓ::F) where F
     k.lnℓ = lnℓ
     k.ℓ = exp(lnℓ)
 end

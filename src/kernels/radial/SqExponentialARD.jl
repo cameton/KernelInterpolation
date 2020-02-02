@@ -1,7 +1,7 @@
 
 """
     SqExponentialARD(lnℒ::AbstractVector) 
-    <: RadialKernel{WeightedSqEuclidean, 1}
+    <: RadialKernel{WeightedSqEuclidean}
 
 The squared exponential kernel (aka the Gaussian kernel) with
 vector valued length scale
@@ -21,7 +21,7 @@ k_{\\mathscr{L}}(x, y) = k_{\\mathscr{L}}(\\lVert x - y\\rVert_\\Sigma^2) =
 mutable struct SqExponentialARD{
     F<:AbstractFloat,
     V<:AbstractVector{F},
-} <: RadialKernel{WeightedSqEuclidean, 1}
+} <: RadialKernel{WeightedSqEuclidean}
     dist::WeightedSqEuclidean
     lnℒ::V
     diagΣ::V
@@ -32,14 +32,16 @@ function SqExponentialARD(lnℒ::AbstractVector)
     SqExponentialARD(WeightedSqEuclidean(diagΣ), lnℒ, diagΣ)
 end
 
-(k::SqExponentialARD)(τ::AbstractFloat) = exp(-τ / 2)
+@inline (k::SqExponentialARD)(τ::AbstractFloat) = exp(-τ / 2)
 
 GaussianARD = SqExponentialARD
 
+numparams(k::SqExponentialARD) = (length(k.lnℒ),)
+paramtypes(k::SqExponentialARD{F}) where F = (F,) 
 params(k::SqExponentialARD) = (lnℒ = k.lnℒ,)
-function setparams!(k::SqExponentialARD, lnℒ::AbstractVector)
+function setparams!(k::SqExponentialARD{F}, lnℒ::AbstractVector{F}) where F
     diagΣ = exp.(-2 .* lnℒ)
+    copyto!(k.lnℒ, lnℒ)
+    copyto!(k.diagΣ, diagΣ)
     k.dist = WeightedSqEuclidean(diagΣ)
-    k.lnℒ = lnℒ
-    k.diagΣ = diagΣ
 end
